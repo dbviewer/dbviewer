@@ -20,5 +20,6 @@ app.post('/query', userCtrl.rawQuery);
 app.post('/dropTable', userCtrl.dropTable);
 app.post('/count', userCtrl.count);
 app.post('/sum', userCtrl.sum);
+app.post('/average', userCtrl.average)
 
 app.listen(3000, ()=> console.log('listening on port 3000'));

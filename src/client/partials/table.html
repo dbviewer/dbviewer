@@ -16,6 +16,9 @@
 					<div ng-if="queryType === 'Sum'">
 							<div class="input-label">Sum(numeric values)</div>
 					</div>
+					<div ng-if="queryType === 'Average'">
+						<div class="input-label">Average</div>
+					</div>
 					<div ng-if="queryType==='Create Table'">
 						<div class="input-label">Column Name</div>
 						<input type="text" ng-model="column"></input><br>
