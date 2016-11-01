@@ -7,3 +7,39 @@
         {{tablename}}
      </button>
 </div>
+
+<br />
+<br />
+<br />
+<br />
+
+<h3>Join tables:</h3>
+<form>
+	<select ng-options="t for t in tablenames" ng-model="table1" ng-change="requestTableFields(table1, 1)">
+   <option value="" selected>Select table name</option>
+  </select>
+
+	<div ng-if="table1===table1">
+		<select ng-options="fields for fields in table1fields" ng-model="table1key" ng-change="test()">
+      <option value="" selected>Select JOIN key</option>
+    </select>
+	</div>
+
+	<br />
+
+	<select ng-options="t for t in tablenames" ng-model="table2" ng-change="requestTableFields(table2, 2)">
+   <option value="" selected>Select table name</option>
+  </select>
+
+	<div ng-if="table2===table2">
+		<select ng-options="fields for fields in table2fields" ng-model="table2key" ng-change="test()">
+      <option value="" selected>Select JOIN key</option>
+    </select>
+	</div>
+
+	<button type="submit" ng-click="requestTableJoin(table1, table2, table1key, table2key)">Join</button>
+</form>
+
+
+
+<!--dbController-->

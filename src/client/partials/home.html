@@ -7,8 +7,10 @@
 	<input type="text" ng-model="creds.user" placeholder='User'></input>
 	<input type="text" ng-model="creds.port" placeholder='Port'></input>
 	<input type="text" ng-model="creds.password" placeholder='Password'></input>
+
 	<select ng-options="item for item in dialects" ng-model="creds.dialect">
-  <option value="" selected>Select a dialect</option>
+   <option value="" selected>Select a dialect</option>
   </select>
+
 	<button type="submit" ng-click="post()">Save</button>
 </form>

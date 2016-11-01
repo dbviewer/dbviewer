@@ -10,15 +10,18 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-6">
+
 					<div ng-if="queryType === 'Count'">
 						<div class="input-label">Distinction Field</div>
 					</div>
 					<div ng-if="queryType === 'Sum'">
 							<div class="input-label">Sum(numeric values)</div>
 					</div>
+
 					<div ng-if="queryType === 'Average'">
 						<div class="input-label">Average</div>
 					</div>
+
 					<div ng-if="queryType==='Create Table'">
 						<div class="input-label">Column Name</div>
 						<input type="text" ng-model="column"></input><br>
@@ -27,7 +30,16 @@
 						<button class="table-button" ng-click="removeEntry(column)">Remove Column</button>
 						<div class="input-label">Table Name</div>
 					</div>
-					<div class ="input-label" ng-if="queryType==='Text Query'">Type full SQL command below</div>
+
+					<div class ="input-label" ng-if="queryType==='SQL Query'">Type full SQL command below</div>
+					<div ng-if="queryType==='Search Query'">
+						<div>Enter Column(s) or 'ALL'</div>
+						<input type="text" ng-model="column"></input><br>
+						<button class="table-button" ng-click="saveEntry(column, column)">Add Column</button>
+						<button class="table-button" ng-click="removeEntry(column, column)">Remove Column</button>
+						<div class input-label>Pick Condition(s)  [Example - "Price > 3" , "Price > 3 AND Letter = 'e'"]</div>
+					</div>
+
 					<div class="input-label" ng-if="queryType==='Drop Table'">Table Name</div>
 					<!--ng-if="queryType==='Text Query' || queryType==='Delete Rows' || queryType==='Update Rows' || queryType==='Drop Table'"-->
 					<div class="input-label" ng-if="queryType==='Delete Rows' || queryType==='Update Rows'">WHERE clause</div>
@@ -44,6 +56,7 @@
 							<button class="table-button" ng-click="removeEntry(columnName)">Remove Entry</button>
 						</div>
 					</div>
+
 				</div>
 				<div class="col-xs-6">
 					<div class="input-label" ng-if="queryType==='Update Rows' || queryType==='Insert Rows'">Entries to be added</div>
