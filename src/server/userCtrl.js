@@ -9,7 +9,7 @@ userCtrl.sendTableList = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
+    res.end('error')
   });
 }
 
@@ -20,8 +20,8 @@ userCtrl.sendTable = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  });  
+    res.end('error')
+  });
 }
 
 userCtrl.createTable = (req, res) => {
@@ -32,8 +32,8 @@ userCtrl.createTable = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  });  
+    res.end('error')
+  });
 }
 
 userCtrl.insertEntry = (req, res) => {
@@ -43,8 +43,8 @@ userCtrl.insertEntry = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  });  
+    res.end('error')
+  });
 }
 
 userCtrl.updateEntry = (req, res) => {
@@ -55,8 +55,8 @@ userCtrl.updateEntry = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  });  
+    res.end('error')
+  });
 }
 
 userCtrl.deleteEntry = (req, res) => {
@@ -66,8 +66,8 @@ userCtrl.deleteEntry = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  });  
+    res.end('error')
+  });
 }
 
 userCtrl.rawQuery = (req, res) => {
@@ -78,8 +78,8 @@ userCtrl.rawQuery = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  }); 
+    res.end('error')
+  });
 }
 userCtrl.dropTable = (req, res) => {
   dbCtrl.dropTable(req.body)
@@ -88,14 +88,28 @@ userCtrl.dropTable = (req, res) => {
   })
   .catch( (err) => {
     console.log(err);
-    res.end('error') 
-  }); 
+    res.end('error')
+  });
+}
+userCtrl.count = (req, res) => {
+  dbCtrl.count(req.body)
+  .then(result => {
+    console.log('user controller', result);
+    res.json(result);
+  })
+  .catch(err => {
+    console.log(err)
+    res.end('error')
+  })
+}
+userCtrl.sum = (req, res) => {
+  dbCtrl.sum(req.body)
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    res.end('error')
+  })
 }
 
-
 module.exports = userCtrl;
-
-
-
-
-
