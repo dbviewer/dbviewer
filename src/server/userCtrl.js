@@ -4,36 +4,36 @@ const userCtrl = {};
 
 userCtrl.sendTableList = (req, res) => {
   dbCtrl.showTables(req.body)
-  .then( (result) => {
-    res.json(result);
-  })
-  .catch( (err) => {
-    console.log(err);
-    res.end('error')
-  });
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.end('error')
+    });
 }
 
 userCtrl.sendTable = (req, res) => {
   dbCtrl.getTable(req.body)
-  .then( (result) => {
-    res.json(result);
-  })
-  .catch( (err) => {
-    console.log(err);
-    res.end('error')
-  });
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.end('error')
+    });
 }
 
 userCtrl.createTable = (req, res) => {
   dbCtrl.createTable(req.body)
-  .then( (result) => {
-    console.log(result);
-    res.json(result);
-  })
-  .catch( (err) => {
-    console.log(err);
-    res.end('error')
-  });
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.end('error')
+    });
 }
 
 userCtrl.insertEntry = (req, res) => {
@@ -114,14 +114,42 @@ userCtrl.sum = (req, res) => {
 
 userCtrl.searchTable = (req, res) => {
   dbCtrl.searchTable(req.body)
-  .then( (result) => {
-    console.log(result);
-    res.json(result);
-  }).catch( (err) => {
-    console.log(err);
-    res.end('error')
-  })
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    }).catch((err) => {
+      console.log(err);
+      res.end('error')
+    })
 }
+
+///////////////////////////////////
+// New Join Table Middleware
+userCtrl.sendJoinTable = (req, res) => {
+  dbCtrl.getJoinTable(req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.end('error');
+    });
+}
+///////////////////////////////////
+
+///////////////////////////////////
+// New Request Field Middleware
+userCtrl.sendTableFields = (req, res) => {
+  dbCtrl.getTableFields(req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.end('error')
+    });
+}
+///////////////////////////////////
 
 
 module.exports = userCtrl;
