@@ -2,35 +2,6 @@ const dbCtrl = require('./dbCtrl');
 
 const userCtrl = {};
 
-///////////////////////////////////
-// New Join Table Middleware
-userCtrl.sendJoinTable = (req, res) => {
-  dbCtrl.getJoinTable(req.body)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.end('error');
-    });
-}
-///////////////////////////////////
-
-///////////////////////////////////
-// New Request Field Middleware
-userCtrl.sendTableFields = (req, res) => {
-  dbCtrl.getTableFields(req.body)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.end('error')
-    });
-}
-///////////////////////////////////
-
-
 userCtrl.sendTableList = (req, res) => {
   dbCtrl.showTables(req.body)
     .then((result) => {
@@ -67,51 +38,109 @@ userCtrl.createTable = (req, res) => {
 
 userCtrl.insertEntry = (req, res) => {
   dbCtrl.insertRow(req.body)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.end('error')
-    });
+  .then( (result) => {
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error')
+  });
 }
 
 userCtrl.updateEntry = (req, res) => {
   dbCtrl.updateRow(req.body)
-    .then((result) => {
-      console.log(result);
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.end('error')
-    });
+  .then( (result) => {
+    console.log(result);
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error')
+  });
 }
 
 userCtrl.deleteEntry = (req, res) => {
   dbCtrl.deleteRow(req.body)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.end('error')
-    });
+  .then( (result) => {
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error')
+  });
 }
 
 userCtrl.rawQuery = (req, res) => {
   dbCtrl.commandLine(req.body)
-    .then((result) => {
-      console.log(result);
-      res.json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.end('error')
-    });
+  .then( (result) => {
+    console.log(result);
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error')
+  });
 }
 userCtrl.dropTable = (req, res) => {
   dbCtrl.dropTable(req.body)
+  .then( (result) => {
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error')
+  });
+}
+userCtrl.count = (req, res) => {
+  dbCtrl.count(req.body)
+  .then(result => {
+    console.log('user controller', result);
+    res.json(result);
+  })
+  .catch(err => {
+    console.log(err)
+    res.end('error')
+  })
+}
+userCtrl.sum = (req, res) => {
+  dbCtrl.sum(req.body)
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    res.end('error')
+  })
+}
+
+userCtrl.searchTable = (req, res) => {
+  dbCtrl.searchTable(req.body)
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    }).catch((err) => {
+      console.log(err);
+      res.end('error')
+    })
+}
+
+///////////////////////////////////
+// New Join Table Middleware
+userCtrl.sendJoinTable = (req, res) => {
+  dbCtrl.getJoinTable(req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.end('error');
+    });
+}
+///////////////////////////////////
+
+///////////////////////////////////
+// New Request Field Middleware
+userCtrl.sendTableFields = (req, res) => {
+  dbCtrl.getTableFields(req.body)
     .then((result) => {
       res.json(result);
     })
@@ -120,11 +149,7 @@ userCtrl.dropTable = (req, res) => {
       res.end('error')
     });
 }
+///////////////////////////////////
 
 
 module.exports = userCtrl;
-
-
-
-
-
