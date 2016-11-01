@@ -19,4 +19,7 @@ app.post('/delete', userCtrl.deleteEntry);
 app.post('/query', userCtrl.rawQuery);
 app.post('/dropTable', userCtrl.dropTable);
 
+app.post('/requestJoinTable', userCtrl.sendJoinTable);
+app.post('/requestTableFields', userCtrl.sendTableFields);
+
 app.listen(3000, ()=> console.log('listening on port 3000'));
