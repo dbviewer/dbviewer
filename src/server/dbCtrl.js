@@ -125,7 +125,6 @@ console.log('objwhere',obj);
         // Executing raw command
         return sequelize.query(obj.where)
             // Return results
-<<<<<<< HEAD
             .then((results) => { 
                 console.log(results);
                  return results[0] });
@@ -157,9 +156,6 @@ console.log('objwhere',obj);
 
     },
     
-=======
-            .then((results) => { return results[0] });
-    },
     count: (obj) => {
       // Object being passed in from userCtrl has a `creds` object that has all login credentials
       const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
@@ -193,7 +189,6 @@ console.log('objwhere',obj);
         return results;
       })
     }
->>>>>>> 8f110d53e491ebffb7fd27ff91c8ad4904c180be
 }
 
 module.exports = dbCtrl;

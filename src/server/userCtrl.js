@@ -111,7 +111,7 @@ userCtrl.sum = (req, res) => {
     res.end('error')
   })
 }
-<<<<<<< HEAD
+
 userCtrl.searchTable = (req, res) => {
   dbCtrl.searchTable(req.body)
   .then( (result) => {
@@ -123,7 +123,5 @@ userCtrl.searchTable = (req, res) => {
   })
 }
 
-=======
->>>>>>> 8f110d53e491ebffb7fd27ff91c8ad4904c180be
 
 module.exports = userCtrl;
