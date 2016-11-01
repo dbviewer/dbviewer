@@ -209,7 +209,7 @@ const dbCtrl = {
       dialectOptions: { ssl: true }
     });
 
-    return sequelize.query(`SELECT * FROM ${obj.table1} JOIN ${obj.table2} ON ${obj.table1}.id=${obj.table2}.id`, { type: sequelize.QueryTypes.SELECT });
+    return sequelize.query(`SELECT * FROM ${obj.table1} JOIN ${obj.table2} ON ${obj.table1}.${obj.key1}=${obj.table2}.${obj.key2}`, { type: sequelize.QueryTypes.SELECT });
   },
   ///////////////////////////////////
 

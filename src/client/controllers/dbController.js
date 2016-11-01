@@ -18,14 +18,7 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
 
   ///////////////////////////////////
   // make post request to download JOINED tables
-  $scope.requestTableJoin = function (table1, table2, table1key, table2key) {
-    // console.log('----------------------');
-    // console.log('table1 : ' + table1);
-    // console.log('table2 : ' + table2);
-    // console.log('table1key : ' + table1key);
-    // console.log('table2key : ' + table2key);
-    // console.log('----------------------');
-
+  $scope.requestTableJoin = function (table1, table2, key1, key2) {
     $http({
       method: 'POST',
       url: '/requestJoinTable',
@@ -35,24 +28,28 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
       data: { creds: dbService.creds, table1, table2, key1, key2 }
     })
       .then((response) => {
+        $scope.table1 = '';
+        $scope.table2 = '';
+        $scope.table1fields = [];
+        $scope.table2fields = [];
+        $scope.table1key = '';
+        $scope.table2key = '';
         activateTable($scope, table1 + table2, tableService);
         tableService.addTableData(table1 + table2, response.data)
       })
   }
   ///////////////////////////////////
 
-  $scope.test = function () {
-    console.log('key1 : ' + $scope.table1key);
-    console.log('t1fields : ' + $scope.table1fields);
-    console.log('key2 : ' + $scope.table2key);
-    console.log('t2fields : ' + $scope.table2fields);
+  $scope.setJoinId = (key, pos) => {
+    if (pos === 1) $scope.table1key = key;
+    if (pos === 2) $scope.table2key = key;
   }
 
   ///////////////////////////////////
   // post request for table field names
-  $scope.requestTableFields = function (table, which) {
-    if(which===1) $scope.table1fields = [];
-    if(which===2) $scope.table2fields = [];
+  $scope.requestTableFields = function (table, pos) {
+    if (pos === 1) $scope.table1fields = [];
+    if (pos === 2) $scope.table2fields = [];
 
     $http({
       method: 'POST',
@@ -64,10 +61,10 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
     })
       .then((response) => {
         response.data.forEach(obj => {
-          if (which === 1) {
+          if (pos === 1) {
             $scope.table1fields.push(obj['column_name']);
           }
-          if (which === 2) {
+          if (pos === 2) {
             $scope.table2fields.push(obj['column_name']);
           }
         })
