@@ -137,7 +137,6 @@ console.log('objwhere',obj);
             dialect: obj.creds.dialect,
             dialectOptions: { ssl: true }
         });
-        console.log('obj',obj.valuesToInsert);
 
         let columns = ``;
         for (let n in obj.valuesToInsert) {
@@ -148,9 +147,8 @@ console.log('objwhere',obj);
             }
         };
         columns = columns.slice(0, columns.length - 1);
-        console.log('columns here', columns);
-        let conditional = `SELECT ${columns} FROM ${obj.table} WHERE ${obj.where}`;
-        if(obj.where === undefined || obj.where === '') conditional = `SELECT ${columns} FROM ${obj.table}`;
+        let conditional = `SELECT ${columns} FROM ${obj.table}`;
+        if(obj.where) conditional += `WHERE ${obj.where}`;
         return sequelize.query(conditional) 
                     .then((results) => {return results[0]}); 
 
@@ -164,15 +162,12 @@ console.log('objwhere',obj);
           dialectOptions: { ssl: true }
       });
       // Executing raw command
-      console.log(obj);
       var count = obj.where || '*';
       if (count !== '*') {
         count = 'DISTINCT ' + count;
     }
-      console.log('this will be counted', count);
       return sequelize.query(`SELECT COUNT (${count}) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
         .then(results => {
-          console.log(results)
           return results;
         })
 
