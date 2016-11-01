@@ -112,4 +112,16 @@ userCtrl.sum = (req, res) => {
   })
 }
 
+userCtrl.searchTable = (req, res) => {
+  dbCtrl.searchTable(req.body)
+  .then( (result) => {
+    console.log(result);
+    res.json(result);
+  }).catch( (err) => {
+    console.log(err);
+    res.end('error')
+  })
+}
+
+
 module.exports = userCtrl;
