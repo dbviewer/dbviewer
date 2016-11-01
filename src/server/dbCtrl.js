@@ -186,19 +186,18 @@ const dbCtrl = {
         return results;
       })
 
-    },
-    average: (obj) => {
-      const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
-          host: obj.creds.host,
-          dialect: obj.creds.dialect,
-          dialectOptions: { ssl: true }
-      });
-      var avg = obj.where;
-      return sequelize.query(`SELECT AVG(${avg}) FROM ${obj.table}` , { type: sequelize.QueryTypes.SELECT })
+  },
+  average: (obj) => {
+    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+      host: obj.creds.host,
+      dialect: obj.creds.dialect,
+      dialectOptions: { ssl: true }
+    });
+    var avg = obj.where;
+    return sequelize.query(`SELECT AVG(${avg}) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
       .then(results => {
         return results;
       })
-    }
   },
 
   ///////////////////////////////////
