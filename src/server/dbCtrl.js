@@ -56,7 +56,7 @@ const dbCtrl = {
             dialect: obj.creds.dialect,
             dialectOptions: { ssl: true }
         });
-        
+
         return sequelize.query(`DELETE FROM ${obj.table} WHERE ${obj.where}`, { type: sequelize.QueryTypes.DELETE })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     },
@@ -125,6 +125,7 @@ console.log('objwhere',obj);
         // Executing raw command
         return sequelize.query(obj.where)
             // Return results
+<<<<<<< HEAD
             .then((results) => { 
                 console.log(results);
                  return results[0] });
@@ -156,6 +157,43 @@ console.log('objwhere',obj);
 
     },
     
+=======
+            .then((results) => { return results[0] });
+    },
+    count: (obj) => {
+      // Object being passed in from userCtrl has a `creds` object that has all login credentials
+      const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+          host: obj.creds.host,
+          dialect: obj.creds.dialect,
+          dialectOptions: { ssl: true }
+      });
+      // Executing raw command
+      console.log(obj);
+      var count = obj.where || '*';
+      if (count !== '*') {
+        count = 'DISTINCT ' + count;
+    }
+      console.log('this will be counted', count);
+      return sequelize.query(`SELECT COUNT (${count}) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
+        .then(results => {
+          console.log(results)
+          return results;
+        })
+
+    },
+    sum: (obj) => {
+      const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+          host: obj.creds.host,
+          dialect: obj.creds.dialect,
+          dialectOptions: { ssl: true }
+      });
+      var sum = obj.where;
+      return sequelize.query(`SELECT SUM (${sum}) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }).
+      then(results => {
+        return results;
+      })
+    }
+>>>>>>> 8f110d53e491ebffb7fd27ff91c8ad4904c180be
 }
 
 module.exports = dbCtrl;

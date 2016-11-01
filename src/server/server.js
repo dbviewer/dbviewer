@@ -19,5 +19,7 @@ app.post('/delete', userCtrl.deleteEntry);
 app.post('/query', userCtrl.rawQuery);
 app.post('/dropTable', userCtrl.dropTable);
 app.post('/search', userCtrl.searchTable);
+app.post('/count', userCtrl.count);
+app.post('/sum', userCtrl.sum);
 
 app.listen(3000, ()=> console.log('listening on port 3000'));

@@ -7,14 +7,18 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   $scope.name = tableService.currentTable;
   $scope.displayName = tableService.currentTable;
   $scope.dataToDisplay = tableService.getData($scope.name);
-  
+
 
   // reference the data that will be rendered to a table format
   $scope.gridData = {
     data: $scope.dataToDisplay,
     enableFiltering: true,
   }
+<<<<<<< HEAD
   $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows', 'Delete Rows', 'Drop Table'];
+=======
+  $scope.queryOptions = ['Text Query', 'Create Table', 'Insert Rows', 'Update Rows', 'Delete Rows', 'Drop Table', 'Count', 'Sum'];
+>>>>>>> 8f110d53e491ebffb7fd27ff91c8ad4904c180be
   $scope.dataTypes = ['Integer', 'Varchar', 'Serial', 'Date', 'Time'];
   $scope.rowsToAdd = {};
   $scope.saveEntry = (column, value) => {
@@ -37,8 +41,14 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       case 'Update Rows': route = '/update'; break;
       case 'Delete Rows': route = '/delete'; break;
       case 'Drop Table': route = '/dropTable'; break;
+<<<<<<< HEAD
       case 'SQL Query': route = '/query'; break;
       case 'Search Query': route = '/search'; break;
+=======
+      case 'Text Query': route = '/query'; break;
+      case 'Count': route = '/count'; break;
+      case 'Sum': route = '/sum'; break;
+>>>>>>> 8f110d53e491ebffb7fd27ff91c8ad4904c180be
       default: return;
     }
     console.log($scope.tableName);
@@ -70,5 +80,3 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       })
   };
 }
-
-
