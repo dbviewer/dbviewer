@@ -105,7 +105,8 @@ const dbCtrl = {
             dialect: obj.creds.dialect,
             dialectOptions: { ssl: true }
         });
-
+        console.log('workign');
+console.log('objwhere',obj);
         // Deleting table, then returning list of table names.
         return sequelize.query(`DROP TABLE ${obj.where}`)
             .then((results) => {
@@ -124,8 +125,37 @@ const dbCtrl = {
         // Executing raw command
         return sequelize.query(obj.where)
             // Return results
-            .then((results) => { return results[0] });
-    }
+            .then((results) => { 
+                console.log(results);
+                 return results[0] });
+    },
+
+    searchTable: (obj) => {
+        console.log(obj);
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+        console.log('obj',obj.valuesToInsert);
+
+        let columns = ``;
+        for (let n in obj.valuesToInsert) {
+            columns += `${obj.valuesToInsert[n]},`
+            if(obj.valuesToInsert[n] === 'ALL') {
+              columns = `*,`;
+              break;
+            }
+        };
+        columns = columns.slice(0, columns.length - 1);
+        console.log('columns here', columns);
+        let conditional = `SELECT ${columns} FROM ${obj.table} WHERE ${obj.where}`;
+        if(obj.where === undefined || obj.where === '') conditional = `SELECT ${columns} FROM ${obj.table}`;
+        return sequelize.query(conditional) 
+                    .then((results) => {return results[0]}); 
+
+    },
+    
 }
 
 module.exports = dbCtrl;

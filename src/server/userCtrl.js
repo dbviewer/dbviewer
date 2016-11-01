@@ -91,6 +91,16 @@ userCtrl.dropTable = (req, res) => {
     res.end('error') 
   }); 
 }
+userCtrl.searchTable = (req, res) => {
+  dbCtrl.searchTable(req.body)
+  .then( (result) => {
+    console.log(result);
+    res.json(result);
+  }).catch( (err) => {
+    console.log(err);
+    res.end('error')
+  })
+}
 
 
 module.exports = userCtrl;
