@@ -29,5 +29,3 @@ function HomeController($scope, $http, $location, dbService) {
       });
   }
 }
-
-

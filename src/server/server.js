@@ -21,6 +21,7 @@ app.post('/dropTable', userCtrl.dropTable);
 app.post('/search', userCtrl.searchTable);
 app.post('/count', userCtrl.count);
 app.post('/sum', userCtrl.sum);
+app.post('/average', userCtrl.average)
 
 app.post('/requestJoinTable', userCtrl.sendJoinTable);
 app.post('/requestTableFields', userCtrl.sendTableFields);

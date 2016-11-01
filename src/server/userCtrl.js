@@ -111,6 +111,15 @@ userCtrl.sum = (req, res) => {
     res.end('error')
   })
 }
+userCtrl.average = (req, res) => {
+  dbCtrl.average(req.body)
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    res.end('error')
+  })
+}
 
 userCtrl.searchTable = (req, res) => {
   dbCtrl.searchTable(req.body)

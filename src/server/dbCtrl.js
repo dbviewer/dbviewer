@@ -185,10 +185,24 @@ const dbCtrl = {
       then(results => {
         return results;
       })
+
+    },
+    average: (obj) => {
+      const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+          host: obj.creds.host,
+          dialect: obj.creds.dialect,
+          dialectOptions: { ssl: true }
+      });
+      var avg = obj.where;
+      return sequelize.query(`SELECT AVG(${avg}) FROM ${obj.table}` , { type: sequelize.QueryTypes.SELECT })
+      .then(results => {
+        return results;
+      })
+    }
   },
 
   ///////////////////////////////////
-  // New Join Table Middleware    
+  // New Join Table Middleware
   getJoinTable: (obj) => {
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
       host: obj.creds.host,
@@ -212,7 +226,7 @@ const dbCtrl = {
     return sequelize.query(`SELECT column_name FROM information_schema.columns WHERE table_name='${obj.table}'`, { type: sequelize.QueryTypes.SELECT });
 
   }
-  ///////////////////////////////////
+
 }
 
 module.exports = dbCtrl;

@@ -15,7 +15,8 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     enableFiltering: true,
   }
 
-  $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows', 'Delete Rows', 'Drop Table', 'Count', 'Sum'];
+  $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows',
+  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average'];
   $scope.dataTypes = ['Integer', 'Varchar', 'Serial', 'Date', 'Time'];
   $scope.rowsToAdd = {};
   $scope.saveEntry = (column, value) => {
@@ -43,6 +44,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       case 'Text Query': route = '/query'; break;
       case 'Count': route = '/count'; break;
       case 'Sum': route = '/sum'; break;
+      case 'Average': route = '/average'; break;
       default: return;
     }
     console.log($scope.tableName);
