@@ -14,6 +14,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     data: $scope.dataToDisplay,
     enableFiltering: true,
   }
+
   $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows', 'Delete Rows', 'Drop Table', 'Count', 'Sum'];
   $scope.dataTypes = ['Integer', 'Varchar', 'Serial', 'Date', 'Time'];
   $scope.rowsToAdd = {};
