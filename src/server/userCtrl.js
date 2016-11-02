@@ -184,4 +184,14 @@ userCtrl.renderChart = (req, res) => {
   res.json(dbCtrl.renderChart(req.body));
 }
 
+userCtrl.log = (req, res) => {
+  dbCtrl.log(req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.end('error')
+    })
+}
+
 module.exports = userCtrl;
