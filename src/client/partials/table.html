@@ -54,11 +54,11 @@
 					</div>
 					
 					<div ng-if="queryType==='Chart'">
-						<div>Enter Columns</div>
+						<div>Add X-axis ID, then Comparison Data Fields</div>
 						<select  ng-model="chartType" ng-options="chart for chart in chartTypes"><option value="" selected>Chart Type</option></select>
 						<input type="text" ng-model="column"></input><br>
-						<button class="table-button" ng-click="saveEntry(column, chartType)">Add Column</button>
-						<button class="table-button" ng-click="removeEntry(column, column)">Remove Column</button>
+						<button class="table-button" ng-click="saveEntry(column, chartType)">Add Data</button>
+						<button class="table-button" ng-click="removeEntry(column, column)">Remove Data</button>
 					</div>
 
 					<div class="input-label" ng-if="queryType==='Drop Table'">Table Name</div>

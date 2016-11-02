@@ -75,16 +75,32 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     })
       .then((response) => {
         if (response.data[0] === 'chart') {
+          let numberMaker = (ele) => {
+            return Number(ele.replace(/[^0-9]/g, ''));
+          };
+          let columnData = response.data.slice(3).reduce((acc, arrEle) => {
+            let arr = [];
+            arrEle.forEach((ele,ind) => {
+              if(ind === 0) {
+                arr.push(ele);
+                return
+              };
+              arr.push(numberMaker(ele))
+            });
+            acc.push(arr);
+            return acc;
+          },[]);
+          console.log(response);
                     var chart = c3.generate({
             bindto: '#chart',
             data: {
-              columns: response.data.slice(2),
+              columns: columnData,
               type: response.data[1]
             },
             axis: {
               x: {
                 type: 'category',
-                categories: ['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5', 'Row 6', 'row 7', 'Row 8']///add array
+                categories: response.data[2].slice(1)///add array
               }
             }
           });
