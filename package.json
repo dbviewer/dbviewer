@@ -20,6 +20,7 @@
   "homepage": "https://github.com/dbviews/dbview#readme",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-file-upload": "^2.3.4",
     "angular-loading-bar": "^0.9.0",
     "angular-route": "^1.5.8",
     "angular-ui-grid": "^3.2.9",
