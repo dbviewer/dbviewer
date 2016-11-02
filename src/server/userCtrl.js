@@ -92,6 +92,7 @@ userCtrl.dropTable = (req, res) => {
   });
 }
 userCtrl.count = (req, res) => {
+  console.log(req.body)
   dbCtrl.count(req.body)
   .then(result => {
     console.log('user controller', result);
@@ -120,7 +121,24 @@ userCtrl.average = (req, res) => {
     res.end('error')
   })
 }
-
+userCtrl.divide = (req, res) => {
+  dbCtrl.divide(req.body)
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    res.send('error')
+  })
+}
+userCtrl.multiply = (req, res) => {
+  dbCtrl.multiply(req.body)
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    res.send('error')
+  })
+}
 userCtrl.searchTable = (req, res) => {
   dbCtrl.searchTable(req.body)
     .then((result) => {
@@ -159,6 +177,14 @@ userCtrl.sendTableFields = (req, res) => {
     });
 }
 ///////////////////////////////////
-
+userCtrl.log = (req, res) => {
+  dbCtrl.log(req.body)
+  .then((result) => {
+    res.json(result);
+  })
+  .catch((err) => {
+    res.end('error')
+  })
+}
 
 module.exports = userCtrl;
