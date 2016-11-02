@@ -81,7 +81,6 @@ userCtrl.rawQuery = (req, res) => {
     res.end('error')
   });
 }
-
 userCtrl.dropTable = (req, res) => {
   dbCtrl.dropTable(req.body)
   .then( (result) => {
@@ -92,9 +91,7 @@ userCtrl.dropTable = (req, res) => {
     res.end('error')
   });
 }
-
 userCtrl.count = (req, res) => {
-  console.log(req.body)
   dbCtrl.count(req.body)
   .then(result => {
     console.log('user controller', result);
@@ -105,7 +102,6 @@ userCtrl.count = (req, res) => {
     res.end('error')
   })
 }
-
 userCtrl.sum = (req, res) => {
   dbCtrl.sum(req.body)
   .then(result => {
@@ -115,15 +111,14 @@ userCtrl.sum = (req, res) => {
     res.end('error')
   })
 }
-
 userCtrl.average = (req, res) => {
   dbCtrl.average(req.body)
   .then(result => {
     res.json(result);
   })
   .catch(err => {
-    res.end('error')
-  })
+    res.end('error') 
+   })
 }
 
 userCtrl.divide = (req, res) => {
@@ -140,7 +135,7 @@ userCtrl.multiply = (req, res) => {
   dbCtrl.multiply(req.body)
   .then(result => {
     res.json(result)
-  })
+  })  
   .catch(err => {
     res.send('error')
   })
@@ -186,15 +181,7 @@ userCtrl.sendTableFields = (req, res) => {
 ///////////////////////////////////
 
 userCtrl.renderChart = (req, res) => {
-  //res.json(dbCtrl.renderChart(req.body));
-  userCtrl.log = (req, res) => {
-    dbCtrl.log(req.body)
-      .then((result) => {
-        res.json(result);
-      })
-      .catch((err) => {
-        res.end('error')
-      })
-  }
+  res.json(dbCtrl.renderChart(req.body));
 }
+
 module.exports = userCtrl;
