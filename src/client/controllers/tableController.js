@@ -1,5 +1,3 @@
-
-// con 
 angular
   .module('Dbview.TableController', ['ui.router'])
   .controller('TableController', ['$scope', 'tableService', '$stateParams', 'dbService', '$http', '$state', '$timeout', tableController])
@@ -9,6 +7,19 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   $scope.name = tableService.currentTable;
   $scope.displayName = tableService.currentTable;
   $scope.dataToDisplay = tableService.getData($scope.name);
+  var csvContent = "data:text/csv;charset=utf-8,";
+  $scope.dataToDisplay.forEach(row => {
+    let rowArray = [];
+    for (let key in row) {rowArray.push(key, row[key])};
+    csvContent += rowArray.join(",") + "\n";
+  });
+  var encodedUri = encodeURI(csvContent);
+  var link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.innerHTML = 'Download Data';
+  link.id = 'dataAnchor';
+  link.setAttribute("download", "my_data.csv");
+  document.getElementById("download").appendChild(link);
   $scope.secondquery = '';
 
   // reference the data that will be rendered to a table format
@@ -91,6 +102,14 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
           data: $scope.dataToDisplay,
           enableFiltering: true,
         }
+        var csvContent = "data:text/csv;charset=utf-8,";
+        $scope.dataToDisplay.forEach(row => {
+          let rowArray = [];
+          for (let key in row) {rowArray.push(key, row[key])};
+          csvContent += rowArray.join(",") + "\n";
+        });
+        var encodedUri = encodeURI(csvContent);
+        document.getElementById("dataAnchor").setAttribute("href", encodedUri);
         $scope.displayName = 'Query Result';
       })
   };
