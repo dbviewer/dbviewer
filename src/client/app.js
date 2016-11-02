@@ -9,6 +9,7 @@ const app = angular
     'ui.grid',
     'tablenav',
     'angular-loading-bar',
+    'angularFileUpload'
   ]);
 
 app.config(configFunction);

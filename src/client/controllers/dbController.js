@@ -15,6 +15,55 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
   $scope.table1key = null;
   $scope.table2key = null;
 
+  // for File Uploader
+  $scope.tableNameUpload;
+
+
+  $scope.upload = function () {
+    let file = $('#file-select')[0].files[0];
+    let read = new FileReader();
+
+    read.readAsBinaryString(file);
+    read.onloadend = function () {
+
+      let parsedArr = read.result.split(/\n/g);
+      parsedArr.pop();
+
+      // inputs to send in POST request 
+      let newTableColumn = {};
+      let newRowDataArr = [];
+
+      // turn column header string into array
+      // insert into 'newTableColumn'
+      // defaults data types to 'Varchar'
+      let columnArr = parsedArr[0].split(',');
+      for (let i = 0; i < columnArr.length; i++) {
+        newTableColumn[columnArr[i]] = 'Varchar';
+      }
+
+      // extract row data from CSV -> place into 'newRow' obj
+      // push each 'newRow' obj into 'newRowDataArr' array to send in POST
+      for (let i = 1; i < parsedArr.length; i++) {
+        let rowArr = parsedArr[i].split(',');
+        let newRow = {};
+        for (let i = 0; i < rowArr.length; i++) {
+          newRow[columnArr[i]] = rowArr[i];
+        }
+        newRowDataArr.push(newRow);
+      }
+
+      // POST request 
+      $http({
+        method: 'POST',
+        url: '/newUpload',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: { creds: dbService.creds, where: $scope.tableNameUpload, columnsToInsert: newTableColumn, rowDataToInsert: newRowDataArr }
+      })
+    }
+  }
+
 
   ///////////////////////////////////
   // make post request to download JOINED tables
@@ -74,7 +123,6 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
 
   // make post request to download a specific table
   $scope.requestTable = function (table) {
-    console.log(table);
     $http({
       method: 'POST',
       url: '/requestTable',
@@ -105,7 +153,6 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
   }
   // add table data to table service
   function addTableData($scope, table, data) {
-    console.log(data);
     if ($scope.tableData[table] === undefined) {
       $scope.tableData[table] = data;
     }

@@ -223,7 +223,57 @@ const dbCtrl = {
     });
 
     return sequelize.query(`SELECT column_name FROM information_schema.columns WHERE table_name='${obj.table}'`, { type: sequelize.QueryTypes.SELECT });
+  },
 
+  createUploadTable: (obj) => {
+    // Object being passed in from userCtrl has a `creds` object that has all login credentials.
+    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+      host: obj.creds.host,
+      dialect: obj.creds.dialect,
+      dialectOptions: { ssl: true }
+    });
+
+    // Building string of columns and column types.
+    let columnsToAdd = ``;
+    for (let n in obj.columnsToInsert) columnsToAdd += ` "${n}" ${obj.columnsToInsert[n]},`;
+    columnsToAdd += ` "createdAt" TIME, "updatedAt" TIME`;
+    columnsToAdd = `(${columnsToAdd.slice(1)})`;
+
+    // Creating table and returning it.
+    return sequelize.query(`CREATE TABLE IF NOT EXISTS ${obj.where} ${columnsToAdd}`)
+      .then((results) => { return sequelize.query(`SELECT * FROM ${obj.where}`, { type: sequelize.QueryTypes.SELECT }) });
+  },
+
+  insertUploadRows: (obj) => {
+    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+      host: obj.creds.host,
+      dialect: obj.creds.dialect,
+      dialectOptions: { ssl: true }
+    });
+
+    let batchPromiseArr = [];
+
+    for (let i = 0; i < obj.rowDataToInsert.length; i++) {
+      let columnsToAdd = ``;
+      let valuesToAdd = ``;
+      for (let n in obj.rowDataToInsert[i]) {
+        columnsToAdd += ` ${n},`;
+        valuesToAdd += ` '${obj.rowDataToInsert[i][n]}',`;
+      }
+      columnsToAdd = columnsToAdd.slice(1, -1);
+      columnsToAdd = `(${columnsToAdd}, "createdAt", "updatedAt")`;
+      valuesToAdd = valuesToAdd.slice(1, -1);
+      valuesToAdd = `(${valuesToAdd}, NOW(), NOW())`;
+
+      batchPromiseArr.push(
+        sequelize.query(`INSERT INTO ${obj.where} ${columnsToAdd} VALUES ${valuesToAdd}`, { type: 'Varchar' })
+      )
+
+    }
+
+    Promise.all(batchPromiseArr)
+      .then(values => console.log(values))
+      .catch(err => console.log(err))
   }
 
 }

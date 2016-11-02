@@ -3,7 +3,19 @@
 <h3>Load tables:</h3>
 
 <div class="form-group">
-	<input type="file" id="exampleInputFile">
+
+
+
+	<input type="file" id="file-select">
+  <input type="text" ng-model="tableNameUpload">
+
+	<button type="button" class="btn btn-success btn-xs" ng-click="upload()">
+    <span class="glyphicon glyphicon-upload"></span>Upload
+  </button>
+
+	<div class="progress" style="margin-bottom: 0;">
+		<div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+	</div>
 </div>
 
 <div class="table-btn-group">
@@ -16,50 +28,60 @@
 <br>
 <br>
 
+
+
+
+<!--JOIN Table Functionality-->
+
 <h3>Join tables:</h3>
 <br>
+<label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">2-table join
+</label>
+<label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">3-table join
+</label>
+<br>
+<br>
 
-<!--Dropdown for initial table names-->
 <form>
-  <div class="row">
-    <div class="form-group col-xs-5 col-lg-3">
-      <label>Select table 1 to JOIN</label>
-      <select class="form-control" ng-options="table for table in tablenames" ng-model="table1" ng-change="requestTableFields(table1, 1)">
+	<!--Dropdown for initial table names (table 1)-->
+	<div class="row">
+		<div class="form-group col-xs-5 col-lg-3">
+			<label>Select table 1 to JOIN</label>
+			<select class="form-control" ng-options="table for table in tablenames" ng-model="table1" ng-change="requestTableFields(table1, 1)">
           <option value="" selected>Select table name</option>
         </select>
-    </div>
-  </div>
+		</div>
 
-  <div class="row">
-    <div class="form-group col-xs-5 col-lg-3">
-      <label>Joining key</label>
-      <select multiple class="form-control" ng-options="fields for fields in table1fields" ng-model="table1key" ng-change="setJoinId(table1key, 1)">
+		<!--Key selector (table 1)-->
+		<div class="form-group col-xs-5 col-lg-3">
+			<label>Joining key</label>
+			<select multiple class="form-control" ng-options="fields for fields in table1fields" ng-model="table1key" ng-change="setJoinId(table1key, 1)">
       </select>
-    </div>
-  </div>
+		</div>
+	</div>
+
 
 	<br>
 
-  <div class="row">
-    <div class="form-group col-xs-5 col-lg-3">
-      <label>Select table 2 to JOIN</label>
-      <select class="form-control" ng-options="table for table in tablenames" ng-model="table2" ng-change="requestTableFields(table2, 2)">
+	<div class="row">
+		<!--Dropdown for initial table names (table 2)-->
+		<div class="form-group col-xs-5 col-lg-3">
+			<label>Select table 2 to JOIN</label>
+			<select class="form-control" ng-options="table for table in tablenames" ng-model="table2" ng-change="requestTableFields(table2, 2)">
           <option value="" selected>Select table name</option>
         </select>
-    </div>
-  </div>
+		</div>
 
-  <div class="row">
-    <div class="form-group col-xs-5 col-lg-3">
-      <label>Joining key</label>
-      <select multiple class="form-control" ng-options="fields for fields in table2fields" ng-model="table2key" ng-change="setJoinId(table2key, 2)">
+		<!--Key selector (table 2)-->
+		<div class="form-group col-xs-5 col-lg-3">
+			<label>Joining key</label>
+			<select multiple class="form-control" ng-options="fields for fields in table2fields" ng-model="table2key" ng-change="setJoinId(table2key, 2)">
       </select>
-    </div>
-  </div>
+		</div>
+	</div>
+
 
 	<button class="btn btn-warning" type="submit" ng-click="requestTableJoin(table1, table2, table1key, table2key)">Generate JOIN</button>
 </form>
-
-
-
-<!--dbController-->
