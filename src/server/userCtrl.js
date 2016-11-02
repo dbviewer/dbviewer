@@ -117,7 +117,27 @@ userCtrl.average = (req, res) => {
     res.json(result);
   })
   .catch(err => {
-    res.end('error')
+    res.end('error') 
+   })
+}
+
+userCtrl.divide = (req, res) => {
+  dbCtrl.divide(req.body)
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    res.send('error')
+  })
+}
+
+userCtrl.multiply = (req, res) => {
+  dbCtrl.multiply(req.body)
+  .then(result => {
+    res.json(result)
+  })  
+  .catch(err => {
+    res.send('error')
   })
 }
 

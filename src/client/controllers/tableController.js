@@ -22,7 +22,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   link.id = 'dataAnchor';
   link.setAttribute("download", "my_data.csv");
   document.getElementById("download").appendChild(link);
-
+  $scope.secondquery = '';
 
   // reference the data that will be rendered to a table format
   $scope.gridData = {
@@ -30,7 +30,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     enableFiltering: true,
   }
   $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows',
-  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average', 'Chart'];
+  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average', 'Chart', 'Divide', 'Log', 'Multiply'];
   $scope.dataTypes = ['Integer', 'Varchar', 'Serial', 'Date', 'Time'];
   $scope.chartTypes = ['bar', 'pie', 'donut', 'line', 'spline', 'step', 'area', 'area-spline','area-step', 'scatter', 'gauge'];
   $scope.rowsToAdd = {};
@@ -45,7 +45,9 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   $scope.queryData = {};
 
   // execute a raw query and update displayed table
-  $scope.executeQuery = function (query) {
+  $scope.executeQuery = function (query, secondquery) {
+    console.log(query)
+    if(secondquery !== '') query = [query, secondquery];
     let route;
     let tableName = $scope.name;
     switch($scope.queryType) {
@@ -60,9 +62,11 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       case 'Sum': route = '/sum'; break;
       case 'Average': route = '/average'; break;
       case 'Chart': route = '/chart'; break;
+      case 'Divide' : route = '/divide'; break;
+      case 'Log' : route = '/log'; break;
+      case 'Multiply': route = '/multiply'; break; 
       default: return;
     }
-
     $http({
       method: 'POST',
       url: route,
@@ -72,7 +76,6 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       data: { creds: dbService.creds, where: query, valuesToInsert: $scope.rowsToAdd, table: tableName, rowData: $scope.gridData.data }
     })
       .then((response) => {
-        console.log(response.data);
         if (response.data[0] === 'chart') {
                     var chart = c3.generate({
             bindto: '#chart',
@@ -92,10 +95,10 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
         const columns = Object.keys(response.data[0]).map( (colname) => {
           return { field: colname };
         });
-
         // save the data in table service and update grid data
         tableService.addTableData($scope.name, response.data)
         $scope.dataToDisplay  = tableService.getData($scope.name);
+        console.log('this is $scope.dataToDisplay: ', $scope.dataToDisplay);
         $scope.gridData = {
           columnDefs: columns,
           data: $scope.dataToDisplay,
