@@ -160,5 +160,8 @@ userCtrl.sendTableFields = (req, res) => {
 }
 ///////////////////////////////////
 
+userCtrl.renderChart = (req, res) => {
+      res.json(dbCtrl.renderChart(req.body));
+}
 
 module.exports = userCtrl;

@@ -1,3 +1,5 @@
+
+// con 
 angular
   .module('Dbview.TableController', ['ui.router'])
   .controller('TableController', ['$scope', 'tableService', '$stateParams', 'dbService', '$http', '$state', '$timeout', tableController])
@@ -8,19 +10,18 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   $scope.displayName = tableService.currentTable;
   $scope.dataToDisplay = tableService.getData($scope.name);
 
-
   // reference the data that will be rendered to a table format
   $scope.gridData = {
     data: $scope.dataToDisplay,
     enableFiltering: true,
   }
-
   $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows',
-  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average'];
+  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average', 'Chart'];
   $scope.dataTypes = ['Integer', 'Varchar', 'Serial', 'Date', 'Time'];
+  $scope.chartTypes = ['bar', 'pie', 'donut', 'line', 'spline', 'step', 'area', 'area-spline','area-step', 'scatter', 'gauge'];
   $scope.rowsToAdd = {};
+
   $scope.saveEntry = (column, value) => {
-    console.log($scope, this.entryValue);
     $scope.rowsToAdd[column] = value;
     $scope.column = null;
     $scope.entryValue = '';
@@ -41,13 +42,12 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       case 'Drop Table': route = '/dropTable'; break;
       case 'SQL Query': route = '/query'; break;
       case 'Search Query': route = '/search'; break;
-      case 'Text Query': route = '/query'; break;
       case 'Count': route = '/count'; break;
       case 'Sum': route = '/sum'; break;
       case 'Average': route = '/average'; break;
+      case 'Chart': route = '/chart'; break;
       default: return;
     }
-    console.log($scope.tableName);
 
     $http({
       method: 'POST',
@@ -55,12 +55,27 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       headers: {
         'Content-Type': 'application/json'
       },
-      data: { creds: dbService.creds, where: query, valuesToInsert: $scope.rowsToAdd, table: tableName }
+      data: { creds: dbService.creds, where: query, valuesToInsert: $scope.rowsToAdd, table: tableName, rowData: $scope.gridData.data }
     })
       .then((response) => {
         console.log(response.data);
+        if (response.data[0] === 'chart') {
+                    var chart = c3.generate({
+            bindto: '#chart',
+            data: {
+              columns: response.data.slice(2),
+              type: response.data[1]
+            },
+            axis: {
+              x: {
+                type: 'category',
+                categories: ['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5', 'Row 6', 'row 7', 'Row 8']///add array
+              }
+            }
+          });
+        return;
+        }
         const columns = Object.keys(response.data[0]).map( (colname) => {
-          console.log(colname);
           return { field: colname };
         });
 
