@@ -114,12 +114,32 @@ userCtrl.sum = (req, res) => {
 }
 userCtrl.average = (req, res) => {
   dbCtrl.average(req.body)
-    .then(result => {
-      res.json(result);
-    })
-    .catch(err => {
-      res.end('error')
-    })
+  .then(result => {
+    res.json(result);
+  })
+  .catch(err => {
+    res.end('error') 
+   })
+}
+
+userCtrl.divide = (req, res) => {
+  dbCtrl.divide(req.body)
+  .then(result => {
+    res.json(result)
+  })
+  .catch(err => {
+    res.send('error')
+  })
+}
+
+userCtrl.multiply = (req, res) => {
+  dbCtrl.multiply(req.body)
+  .then(result => {
+    res.json(result)
+  })  
+  .catch(err => {
+    res.send('error')
+  })
 }
 
 userCtrl.searchTable = (req, res) => {
@@ -171,11 +191,25 @@ userCtrl.sendUploadTable = (req, res, next) => {
 }
 
 userCtrl.insertUploadEntries = (req, res) => {
-  dbCtrl.insertUploadRows(req.body)
+    dbCtrl.insertUploadRows(req.body)
+        .catch((err) => {
+            console.log(err);
+            res.end('error')
+        });
+}
+
+  userCtrl.renderChart = (req, res) => {
+  res.json(dbCtrl.renderChart(req.body));
+}
+
+userCtrl.log = (req, res) => {
+  dbCtrl.log(req.body)
+    .then((result) => {
+      res.json(result);
+    })
     .catch((err) => {
-      console.log(err);
       res.end('error')
-    });
+    })
 }
 
 module.exports = userCtrl;

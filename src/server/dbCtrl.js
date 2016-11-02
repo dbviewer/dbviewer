@@ -133,30 +133,31 @@ const dbCtrl = {
   },
 
   searchTable: (obj) => {
-    console.log(obj);
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
       host: obj.creds.host,
       dialect: obj.creds.dialect,
       dialectOptions: { ssl: true }
     });
-
+    console.log(obj.valuesToInsert);
     let columns = ``;
     for (let n in obj.valuesToInsert) {
       columns += `${obj.valuesToInsert[n]},`
-      if (obj.valuesToInsert[n] === 'ALL') {
+      if (obj.valuesToInsert[n].toLowerCase() === 'all') {
         columns = `*,`;
         break;
       }
     };
+
     columns = columns.slice(0, columns.length - 1);
     let conditional = `SELECT ${columns} FROM ${obj.table}`;
-    if (obj.where) conditional += `WHERE ${obj.where}`;
-    return sequelize.query(conditional)
-      .then((results) => { return results[0] });
-
+    if (obj.where) conditional += ` WHERE ${obj.where}`;
+    return sequelize.query(conditional).then((results) => { return results[0] });
   },
 
+  ////////////////////////////////////////////////////////////
+
   count: (obj) => {
+
     // Object being passed in from userCtrl has a `creds` object that has all login credentials
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
       host: obj.creds.host,
@@ -164,6 +165,7 @@ const dbCtrl = {
       dialectOptions: { ssl: true }
     });
     // Executing raw command
+    console.log(obj.where)
     var count = obj.where || '*';
     if (count !== '*') {
       count = 'DISTINCT ' + count;
@@ -180,28 +182,26 @@ const dbCtrl = {
       dialect: obj.creds.dialect,
       dialectOptions: { ssl: true }
     });
-    var sum = obj.where;
-    return sequelize.query(`SELECT SUM (${sum}) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }).
+    var sum = obj.where || '*';
+    return sequelize.query(`SELECT SUM (${sum}::integer) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }).
       then(results => {
         return results;
       })
 
-  },
-  average: (obj) => {
-    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
-      host: obj.creds.host,
-      dialect: obj.creds.dialect,
-      dialectOptions: { ssl: true }
-    });
-    var avg = obj.where;
-    return sequelize.query(`SELECT AVG(${avg}) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
+    },
+    average: (obj) => {
+      const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+          host: obj.creds.host,
+          dialect: obj.creds.dialect,
+          dialectOptions: { ssl: true }
+      });
+      var avg = obj.where || '*';
+      return sequelize.query(`SELECT AVG(${avg}::integer) FROM ${obj.table}` , { type: sequelize.QueryTypes.SELECT })
       .then(results => {
         return results;
       })
-  },
+    },
 
-  ///////////////////////////////////
-  // New Join Table Middleware
   getJoinTable: (obj) => {
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
       host: obj.creds.host,
@@ -211,10 +211,7 @@ const dbCtrl = {
 
     return sequelize.query(`SELECT * FROM ${obj.table1} JOIN ${obj.table2} ON ${obj.table1}.${obj.key1}=${obj.table2}.${obj.key2}`, { type: sequelize.QueryTypes.SELECT });
   },
-  ///////////////////////////////////
 
-  ///////////////////////////////////
-  // New Request Field Middleware
   getTableFields: (obj) => {
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
       host: obj.creds.host,
@@ -268,12 +265,68 @@ const dbCtrl = {
       batchPromiseArr.push(
         sequelize.query(`INSERT INTO ${obj.where} ${columnsToAdd} VALUES ${valuesToAdd}`, { type: 'Varchar' })
       )
-
     }
-
     Promise.all(batchPromiseArr)
       .then(values => console.log(values))
       .catch(err => console.log(err))
+  },
+
+  renderChart: (obj) => {
+    let chartAxis = [];
+    let chartType = '';
+    for(let key in obj.valuesToInsert) {
+      chartType = obj.valuesToInsert[key];
+      chartAxis.push(key.toLowerCase())
+    }
+    chartAxis = chartAxis.map( ele => {return [ele]});
+    obj.rowData.forEach(row => {
+      for(let i = 0; i < chartAxis.length; i++){
+      chartAxis[i].push(row[chartAxis[i][0]]);
+      }
+    }); //chartaxis is now an array of arrays, which are columns to be used in chart data
+    chartAxis.unshift(chartType || 'bar');
+    chartAxis.unshift('chart');
+    return chartAxis;
+  },
+
+  divide: (obj) => {
+
+    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+        host: obj.creds.host,
+        dialect: obj.creds.dialect,
+        dialectOptions: { ssl: true }
+    });
+    var divide = obj.where[0];
+    var by = obj.where[1];
+    return sequelize.query(`SELECT ${divide}::integer / ${by}::integer FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
+    .then(results => {
+      return results;
+    })
+
+  },
+  log: (obj) => {
+    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+        host: obj.creds.host,
+        dialect: obj.creds.dialect,
+        dialectOptions: { ssl: true }
+    });
+    return sequelize.query(`SELECT LOG(${obj.where}::integer) FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
+    .then(results => {
+      return results;
+    })
+  },
+  multiply: (obj) => {
+    const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+        host: obj.creds.host,
+        dialect: obj.creds.dialect,
+        dialectOptions: { ssl: true }
+    });
+    var multiply = obj.where[0];
+    var by = obj.where[1];
+    return sequelize.query(`SELECT ${multiply}::integer * ${by}::integer FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT })
+    .then(results => {
+      return results;
+    })
   }
 
 }

@@ -2,8 +2,9 @@
 <h1>{{displayName}}</h1>
 
 <div class='table-viewer'>
-
+	<div id="chart"></div>
 	<div ui-grid='gridData' class='grid'></div>
+	<div id="download"></div>
 	<br>
 	<select class="dropdown" ng-model="queryType" ng-options="thing for thing in queryOptions"><option value="" selected>Please select a query type</option></select><br>
 	<form name="values" class="query-form">
@@ -12,14 +13,25 @@
 				<div class="col-xs-6">
 
 					<div ng-if="queryType === 'Count'">
-						<div class="input-label">Distinction Field</div>
+						<div class="input-label">Distinct values from column</div>
 					</div>
 					<div ng-if="queryType === 'Sum'">
 							<div class="input-label">Sum(numeric values)</div>
 					</div>
-
 					<div ng-if="queryType === 'Average'">
 						<div class="input-label">Average</div>
+					</div>
+					<div ng-if="queryType === 'Log'">
+						<div class="input-label">Logarithm of each element in column</div>
+					</div>
+					<div ng-if="queryType === 'Average'">
+						<div class="input-label">Average</div>
+					</div>
+					<div ng-if="queryType === 'Divide'">
+						<div class="input-label">Divide</div>
+					</div>
+					<div ng-if="queryType === 'Multiply'">
+						<div class="input-label">Multiply</div>
 					</div>
 
 					<div ng-if="queryType==='Create Table'">
@@ -32,6 +44,7 @@
 					</div>
 
 					<div class ="input-label" ng-if="queryType==='SQL Query'">Type full SQL command below</div>
+
 					<div ng-if="queryType==='Search Query'">
 						<div>Enter Column(s) or 'ALL'</div>
 						<input type="text" ng-model="column"></input><br>
@@ -39,12 +52,22 @@
 						<button class="table-button" ng-click="removeEntry(column, column)">Remove Column</button>
 						<div class input-label>Pick Condition(s)  [Example - "Price > 3" , "Price > 3 AND Letter = 'e'"]</div>
 					</div>
+					
+					<div ng-if="queryType==='Chart'">
+						<div>Enter Columns</div>
+						<select  ng-model="chartType" ng-options="chart for chart in chartTypes"><option value="" selected>Chart Type</option></select>
+						<input type="text" ng-model="column"></input><br>
+						<button class="table-button" ng-click="saveEntry(column, chartType)">Add Column</button>
+						<button class="table-button" ng-click="removeEntry(column, column)">Remove Column</button>
+					</div>
 
 					<div class="input-label" ng-if="queryType==='Drop Table'">Table Name</div>
 					<!--ng-if="queryType==='Text Query' || queryType==='Delete Rows' || queryType==='Update Rows' || queryType==='Drop Table'"-->
 					<div class="input-label" ng-if="queryType==='Delete Rows' || queryType==='Update Rows'">WHERE clause</div>
-
+					<!-- queries are made here  -->
 					<input id="query" type="text" ng-model="query"/>
+					<div class="input-label" ng-hide="queryType !== 'Divide' && queryType !== 'Multiply'">by</div>
+					<input type="text" ng-hide="queryType !== 'Divide' && queryType !== 'Multiply'" ng-model="secondquery"/>
 
 					<div ng-if="queryType==='Update Rows' || queryType==='Insert Rows'">
 						<div class="input-label">Column Name</div>
@@ -65,7 +88,7 @@
 				</div>
 			</div>
 			<div class="submit-buttons">
-				<button class="table-button" ng-click="executeQuery(query)">Submit</button>
+				<button class="table-button" ng-click="executeQuery(query, secondquery)">Submit</button>
 				<button class="table-button" ng-click="reset()">Reset</button>
 			</div>
 		</div>
