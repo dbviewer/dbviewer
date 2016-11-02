@@ -67,13 +67,13 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
                     var chart = c3.generate({
             bindto: '#chart',
             data: {
-              columns: response.data.slice(2),
+              columns: response.data.slice(3),
               type: response.data[1]
             },
             axis: {
               x: {
                 type: 'category',
-                categories: ['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5', 'Row 6', 'row 7', 'Row 8']///add array
+                categories: response.data[2]///add array
               }
             }
           });
