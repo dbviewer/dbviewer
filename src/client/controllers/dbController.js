@@ -6,7 +6,6 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
   $scope.tablenames = dbService.tables;
   $scope.tableData = {};
   $scope.onlineTables = tableService.activeTables;
-  $scope.chart = tableService.startChart;
   // for JOINS
   $scope.table1 = null;
   $scope.table2 = null;

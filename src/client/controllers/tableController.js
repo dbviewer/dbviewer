@@ -1,5 +1,3 @@
-
-// con 
 angular
   .module('Dbview.TableController', ['ui.router'])
   .controller('TableController', ['$scope', 'tableService', '$stateParams', 'dbService', '$http', '$state', '$timeout', tableController])
