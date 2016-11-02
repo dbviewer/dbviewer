@@ -7,7 +7,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   $scope.name = tableService.currentTable;
   $scope.displayName = tableService.currentTable;
   $scope.dataToDisplay = tableService.getData($scope.name);
-
+  $scope.secondquery = '';
 
   // reference the data that will be rendered to a table format
   $scope.gridData = {
@@ -16,7 +16,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   }
 
   $scope.queryOptions = ['Search Query', 'SQL Query', 'Create Table', 'Insert Rows', 'Update Rows',
-  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average'];
+  'Delete Rows', 'Drop Table', 'Count', 'Sum', 'Average', 'Divide', 'Log', 'Multiply'];
   $scope.dataTypes = ['Integer', 'Varchar', 'Serial', 'Date', 'Time'];
   $scope.rowsToAdd = {};
   $scope.saveEntry = (column, value) => {
@@ -30,7 +30,9 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
   $scope.queryData = {};
 
   // execute a raw query and update displayed table
-  $scope.executeQuery = function (query) {
+  $scope.executeQuery = function (query, secondquery) {
+    console.log(query)
+    if(secondquery !== '') query = [query, secondquery];
     let route;
     let tableName = $scope.name;
     switch($scope.queryType) {
@@ -45,10 +47,13 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       case 'Count': route = '/count'; break;
       case 'Sum': route = '/sum'; break;
       case 'Average': route = '/average'; break;
+      case 'Divide' : route = '/divide'; break;
+      case 'Log' : route = '/log'; break;
+      case 'Multiply': route = '/multiply'; break; 
       default: return;
     }
     console.log($scope.tableName);
-
+  //  console.log('query:', query, 'secondquery:', secondquery)
     $http({
       method: 'POST',
       url: route,
@@ -58,15 +63,16 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       data: { creds: dbService.creds, where: query, valuesToInsert: $scope.rowsToAdd, table: tableName }
     })
       .then((response) => {
-        console.log(response.data);
+        // console.log('this is response.data ', response.data);
+        // console.log('query: ', query);
         const columns = Object.keys(response.data[0]).map( (colname) => {
-          console.log(colname);
           return { field: colname };
         });
-
+      //  console.log('this is columns after map', columns)
         // save the data in table service and update grid data
         tableService.addTableData($scope.name, response.data)
         $scope.dataToDisplay  = tableService.getData($scope.name);
+        console.log('this is $scope.dataToDisplay: ', $scope.dataToDisplay);
         $scope.gridData = {
           columnDefs: columns,
           data: $scope.dataToDisplay,

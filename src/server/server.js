@@ -21,10 +21,11 @@ app.post('/dropTable', userCtrl.dropTable);
 app.post('/search', userCtrl.searchTable);
 app.post('/count', userCtrl.count);
 app.post('/sum', userCtrl.sum);
-app.post('/average', userCtrl.average)
-
+app.post('/average', userCtrl.average);
+app.post('/divide', userCtrl.divide);
+app.post('/log', userCtrl.log);
+app.post('/multiply', userCtrl.multiply);
 app.post('/requestJoinTable', userCtrl.sendJoinTable);
 app.post('/requestTableFields', userCtrl.sendTableFields);
 
 app.listen(3000, ()=> console.log('listening on port 3000'));
-
