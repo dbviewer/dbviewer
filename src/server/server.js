@@ -22,6 +22,7 @@ app.post('/search', userCtrl.searchTable);
 app.post('/count', userCtrl.count);
 app.post('/sum', userCtrl.sum);
 app.post('/average', userCtrl.average);
+app.post('/chart', userCtrl.renderChart);
 app.post('/divide', userCtrl.divide);
 app.post('/log', userCtrl.log);
 app.post('/multiply', userCtrl.multiply);

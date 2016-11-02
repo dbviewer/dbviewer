@@ -133,27 +133,25 @@ const dbCtrl = {
   },
 
   searchTable: (obj) => {
-    console.log(obj);
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
       host: obj.creds.host,
       dialect: obj.creds.dialect,
       dialectOptions: { ssl: true }
     });
-
+    console.log(obj.valuesToInsert);
     let columns = ``;
     for (let n in obj.valuesToInsert) {
       columns += `${obj.valuesToInsert[n]},`
-      if (obj.valuesToInsert[n] === 'ALL') {
+      if (obj.valuesToInsert[n].toLowerCase() === 'all') {
         columns = `*,`;
         break;
       }
     };
+
     columns = columns.slice(0, columns.length - 1);
     let conditional = `SELECT ${columns} FROM ${obj.table}`;
-    if (obj.where) conditional += `WHERE ${obj.where}`;
-    return sequelize.query(conditional)
-      .then((results) => { return results[0] });
-
+    if (obj.where) conditional += ` WHERE ${obj.where}`;
+    return sequelize.query(conditional).then((results) => { return results[0] });
   },
 
   count: (obj) => {
@@ -227,6 +225,25 @@ const dbCtrl = {
     return sequelize.query(`SELECT column_name FROM information_schema.columns WHERE table_name='${obj.table}'`, { type: sequelize.QueryTypes.SELECT });
 
   },
+
+  renderChart: (obj) => {
+    let chartAxis = [];
+    let chartType = '';
+    for(let key in obj.valuesToInsert) {
+      chartType = obj.valuesToInsert[key];
+      chartAxis.push(key.toLowerCase())
+    }
+    chartAxis = chartAxis.map( ele => {return [ele]});
+    obj.rowData.forEach(row => {
+      for(let i = 0; i < chartAxis.length; i++){
+      chartAxis[i].push(row[chartAxis[i][0]]);
+      }
+    }); //chartaxis is now an array of arrays, which are columns to be used in chart data
+    chartAxis.unshift(chartType || 'bar');
+    chartAxis.unshift('chart');
+    return chartAxis;
+  },
+
   divide: (obj) => {
 
     const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
