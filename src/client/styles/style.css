@@ -1,12 +1,10 @@
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: Raleway;
 }
 
 .btn-block {
   display: block;
 }
-
-
 
 .query-input {
  margin: 50px auto 0 auto;
