@@ -13,13 +13,10 @@
     <span class="glyphicon glyphicon-upload"></span>Upload
   </button>
 
-	<div class="progress" style="margin-bottom: 0;">
-		<div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-	</div>
 </div>
 
 <div class="table-btn-group">
-	<button ng-repeat="tablename in tablenames" class="btn btn-primary btn-block" ng-click="requestTable(tablename)">
+	<button ng-repeat="tablename in tablenames" class="btn btn-warning btn-block" ng-click="requestTable(tablename)">
         {{tablename}}
      </button>
 </div>
@@ -36,7 +33,7 @@
 <h3>Join tables:</h3>
 <br>
 <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">2-table join
+  <input checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">2-table join
 </label>
 <label class="radio-inline">
   <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">3-table join
@@ -85,3 +82,9 @@
 
 	<button class="btn btn-warning" type="submit" ng-click="requestTableJoin(table1, table2, table1key, table2key)">Generate JOIN</button>
 </form>
+
+<br>
+<br>
+<br>
+<br>
+<br>

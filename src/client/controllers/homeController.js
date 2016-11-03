@@ -8,7 +8,8 @@ function HomeController($scope, $http, $location, dbService) {
     database: 'd7ctrh5hg6aadj',
     user: 'dxrwecviorvrto',
     password: 'BDyJHAElIeyxjSLNxI1NBYu3Z4',
-    port: '5432'
+    port: '5432',
+    dialect: 'postgres'
   };
   $scope.dialects = ['postgres', 'mysql'];
 

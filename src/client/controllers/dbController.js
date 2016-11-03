@@ -1,11 +1,12 @@
 angular
   .module('Dbview.DbController', ['ui.router'])
-  .controller('DbController', ['$scope', '$http', '$location', 'dbService', 'tableService', '$state', '$timeout', dbController])
+  .controller('DbController', ['$scope', '$http', '$location', 'dbService', 'tableService', '$state', '$timeout', '$window', dbController])
 
-function dbController($scope, $http, $location, dbService, tableService, $state, $timeout) {
+function dbController($scope, $http, $location, dbService, tableService, $state, $timeout, $window) {
   $scope.tablenames = dbService.tables;
   $scope.tableData = {};
   $scope.onlineTables = tableService.activeTables;
+
   // for JOINS
   $scope.table1 = null;
   $scope.table2 = null;
@@ -16,9 +17,11 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
 
   // for File Uploader
   $scope.tableNameUpload;
+  $scope.tableName;
 
 
   $scope.upload = function () {
+
     let file = $('#file-select')[0].files[0];
     let read = new FileReader();
 
@@ -60,6 +63,9 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
         },
         data: { creds: dbService.creds, where: $scope.tableNameUpload, columnsToInsert: newTableColumn, rowDataToInsert: newRowDataArr }
       })
+        .then((response) => {
+          $scope.tableNameUpload = '';
+        });
     }
   }
 
@@ -83,11 +89,14 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
         $scope.table1key = '';
         $scope.table2key = '';
         activateTable($scope, table1 + table2, tableService);
+        $scope.viewTable($scope.tableName);
+        $window.location.href = '/#/table';
         tableService.addTableData(table1 + table2, response.data)
       })
   }
-  ///////////////////////////////////
 
+  ///////////////////////////////////
+  // setting JOIN ids to pass into POST request
   $scope.setJoinId = (key, pos) => {
     if (pos === 1) $scope.table1key = key;
     if (pos === 2) $scope.table2key = key;
@@ -118,8 +127,8 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
         })
       })
   }
-  ///////////////////////////////////
 
+  ///////////////////////////////////
   // make post request to download a specific table
   $scope.requestTable = function (table) {
     $http({
@@ -134,9 +143,12 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
 
         // add this table to the nav bar
         activateTable($scope, table, tableService);
+        $scope.viewTable($scope.tableName);
+        $window.location.href = '/#/table';
 
         // save the data in table service
         tableService.addTableData(table, response.data);
+
       });
   }
   // view a specific table (actual tablename is passed via $stateParams)
@@ -145,6 +157,7 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
   }
   // add table to nav bar if not already there
   function activateTable($scope, table, tableService) {
+    $scope.tableName = table;
     if (!$scope.onlineTables.includes(table)) {
       tableService.activateTable(table);
       $scope.onlineTables = tableService.activeTables

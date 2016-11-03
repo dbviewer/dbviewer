@@ -114,32 +114,32 @@ userCtrl.sum = (req, res) => {
 }
 userCtrl.average = (req, res) => {
   dbCtrl.average(req.body)
-  .then(result => {
-    res.json(result);
-  })
-  .catch(err => {
-    res.end('error') 
-   })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => {
+      res.end('error')
+    })
 }
 
 userCtrl.divide = (req, res) => {
   dbCtrl.divide(req.body)
-  .then(result => {
-    res.json(result)
-  })
-  .catch(err => {
-    res.send('error')
-  })
+    .then(result => {
+      res.json(result)
+    })
+    .catch(err => {
+      res.send('error')
+    })
 }
 
 userCtrl.multiply = (req, res) => {
   dbCtrl.multiply(req.body)
-  .then(result => {
-    res.json(result)
-  })  
-  .catch(err => {
-    res.send('error')
-  })
+    .then(result => {
+      res.json(result)
+    })
+    .catch(err => {
+      res.send('error')
+    })
 }
 
 userCtrl.searchTable = (req, res) => {
@@ -191,14 +191,11 @@ userCtrl.sendUploadTable = (req, res, next) => {
 }
 
 userCtrl.insertUploadEntries = (req, res) => {
-    dbCtrl.insertUploadRows(req.body)
-        .catch((err) => {
-            console.log(err);
-            res.end('error')
-        });
+  dbCtrl.insertUploadRows(req.body);
+  res.status(200).end();
 }
 
-  userCtrl.renderChart = (req, res) => {
+userCtrl.renderChart = (req, res) => {
   res.json(dbCtrl.renderChart(req.body));
 }
 

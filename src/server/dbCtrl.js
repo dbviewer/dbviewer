@@ -267,7 +267,7 @@ const dbCtrl = {
       )
     }
     Promise.all(batchPromiseArr)
-      .then(values => console.log(values))
+      .then((values) => console.log(values))
       .catch(err => console.log(err))
   },
 
